@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Package Name="StockLLM" Language="1033" Version="0.1.0.0" Manufacturer="MyCompany" UpgradeCode="a2b3c4d5-e6f7-8901-2345-67890abcdef0">
+
+        <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+        <MediaTemplate EmbedCab="yes" />
+
+        <Feature Id="ProductFeature" Title="StockLLM" Level="1">
+            <ComponentGroupRef Id="ProductComponents" />
+            <ComponentRef Id="ApplicationShortcut" />
+        </Feature>
+    </Package>
+
+    <Fragment>
+        <StandardDirectory Id="ProgramFilesFolder">
+            <Directory Id="INSTALLFOLDER" Name="StockLLM" />
+        </StandardDirectory>
+        <StandardDirectory Id="ProgramMenuFolder">
+            <Directory Id="ApplicationProgramsFolder" Name="StockLLM" />
+        </StandardDirectory>
+    </Fragment>
+
+    <Fragment>
+        <DirectoryRef Id="ApplicationProgramsFolder">
+            <Component Id="ApplicationShortcut" Guid="b3c4d5e6-f789-0123-4567-890abcdef123">
+                <Shortcut Id="ApplicationStartMenuShortcut"
+                          Name="StockLLM"
+                          Description="AI-driven Stock Analysis Assistant"
+                          Target="[INSTALLFOLDER]StockLLM.exe"
+                          WorkingDirectory="INSTALLFOLDER"
+                          Icon="icon.ico"/>
+                <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
+                <RegistryValue Root="HKCU" Key="Software\MyCompany\StockLLM" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+
+    <Fragment>
+        <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+            <Component Id="MainExecutable" Guid="c4d5e6f7-8901-2345-6789-0abcdef12345">
+                <File Id="StockLLM.exe" Source="StockLLM.exe" KeyPath="yes">
+                    <Shortcut Id="DesktopShortcut"
+                              Directory="DesktopFolder"
+                              Name="StockLLM"
+                              WorkingDirectory="INSTALLFOLDER"
+                              Icon="icon.ico"
+                              Advertise="yes" />
+                </File>
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+    
+    <Fragment>
+        <Icon Id="icon.ico" SourceFile="..\assets\icon.ico"/>
+    </Fragment>
+</Wix>
